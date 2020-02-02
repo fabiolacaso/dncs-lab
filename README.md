@@ -161,9 +161,9 @@ Provisioning allows to execute a script within each virtual machine. Listed belo
 ```
 1.  #libraries and functions
 2.  export DEBIAN_FRONTEND=noninteractive
-3.  apt-get update
-4.  apt-get install -y tcpdump --assume-yes
-5.  sudo su
+3.  sudo su
+4.  apt-get update
+5.  apt-get install -y tcpdump --assume-yes
 6.  #commands
 7.  ip addr add 192.168.1.2/24 dev enp0s8
 8.  ip link set dev enp0s8 up
@@ -186,9 +186,9 @@ line 10: define new default route
 ```
 1.  #libraries and functions
 2.  export DEBIAN_FRONTEND=noninteractive
-3.  apt-get update
-4.  apt-get install -y tcpdump --assume-yes
-5.  sudo su
+3.  sudo su
+4.  apt-get update
+5.  apt-get install -y tcpdump --assume-yes
 6.  #commands
 7.  ip addr add 192.168.2.2/24 dev enp0s8
 8.  ip link set dev enp0s8 up
@@ -211,9 +211,9 @@ line 10: define new default route
 ```
 1.  #libraries and functions
 2.  export DEBIAN_FRONTEND=noninteractive
-3.  apt-get update
-4.  apt-get install -y tcpdump --assume-yes
-5.  sudo su
+3.  sudo su
+4.  apt-get update
+5.  apt-get install -y tcpdump --assume-yes
 6.  sysctl -w net.ipv4.ip_forward=1
 7.  #commands
 8.  ip link add link enp0s8 name enp0s8.10 type vlan id 10
@@ -245,9 +245,9 @@ line 17: set static route
 ```
 1.  #libraries and functions
 2.  export DEBIAN_FRONTEND=noninteractive
-3.  apt-get update
-4.  apt-get install -y tcpdump --assume-yes
-5.  sudo su
+3.  sudo su
+4.  apt-get update
+5.  apt-get install -y tcpdump --assume-yes
 6.  sysctl -w net.ipv4.ip_forward=1
 7.  #commands
 8.  ip link set dev enp0s8 up
@@ -273,10 +273,10 @@ line 12-13: set static route
 ```
 1.  #libraries and functions
 2.  export DEBIAN_FRONTEND=noninteractive
-3.  apt-get update
-4.  apt-get install -y tcpdump
-5.  apt-get install -y openvswitch-common openvswitch-switch apt-transport-https ca-certificates curl software-properties-common
-6.  sudo su
+3.  sudo su
+4.  apt-get update
+5.  apt-get install -y tcpdump
+6.  apt-get install -y openvswitch-common openvswitch-switch apt-transport-https ca-certificates curl software-properties-common
 7.  #commands
 8.  ovs-vsctl add-br switch
 9.  ovs-vsctl add-port switch enp0s8
@@ -307,9 +307,9 @@ Host-C must run a docker image.
 ```
 1.  #libraries and functions
 2.  export DEBIAN_FRONTEND=noninteractive
-3.  apt-get update
-4.  apt-get install -y tcpdump --assume-yes
-5.  sudo su
+3.  sudo su
+4.  apt-get update
+5.  apt-get install -y tcpdump --assume-yes
 6.  apt install apt-transport-https ca-certificates curl software-properties-common
 7.  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 8.  add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
@@ -366,11 +366,14 @@ line 34: set static route
 
 ## Routing tables
 
+To view the routing tables we can use the command ```route -n```.
+
 **host-a**
 
 |Destination|Gateway|Genmask|Interface|
 |---|---|---|---|
 |0.0.0.0|192.168.1.1|0.0.0.0|enp0s8|
+|0.0.0.0|10.0.2.2|0.0.0.0|enp0s3|
 |10.0.2.0|0.0.0.0|255.255.255.0|enp0s3|
 |10.0.2.2|0.0.0.0|255.255.255.255|enp0s3|
 |192.168.1.0|0.0.0.0|255.255.255.0|enp0s8|
@@ -381,6 +384,7 @@ line 34: set static route
 |Destination|Gateway|Genmask|Interface|
 |---|---|---|---|
 |0.0.0.0|192.168.2.1|0.0.0.0|enp0s8|
+|0.0.0.0|10.0.2.2|0.0.0.0|enp0s3|
 |10.0.2.0|0.0.0.0|255.255.255.0|enp0s3|
 |10.0.2.2|0.0.0.0|255.255.255.255|enp0s3|
 |192.168.2.0|0.0.0.0|255.255.255.0|enp0s8|
@@ -390,7 +394,7 @@ line 34: set static route
 
 |Destination|Gateway|Genmask|Interface|
 |---|---|---|---|
-|0.0.0.0|192.168.1.1|0.0.0.0|enp0s3|
+|0.0.0.0|10.0.2.2|0.0.0.0|enp0s3|
 |10.0.2.0|0.0.0.0|255.255.255.0|enp0s3|
 |10.0.2.2|0.0.0.0|255.255.255.255|enp0s3|
 |172.17.0.0|0.0.0.0|255.255.0.0|docker0|
@@ -424,4 +428,66 @@ line 34: set static route
 |192.168.2.0|192.168.4.1|255.255.255.0|enp0s9|
 |192.168.4.0|0.0.0.0|255.255.252.0|enp0s9|
 
+
 ## Testing
+To check the state of the VMs we can type the command ```vagrant status```. The expected output should be:
+```
+Current machine states:
+
+router-1                  running (virtualbox)
+router-2                  running (virtualbox)
+switch                    running (virtualbox)
+host-a                    running (virtualbox)
+host-b                    running (virtualbox)
+host-c                    running (virtualbox)
+
+This environment represents multiple VMs. The VMs are all listed
+above with their current state. For more information about a specific
+VM, run `vagrant status NAME`.
+```
+
+### Ping
+We can also check the connectivity between each host by using the command ```ping```. For instance we can log into host-a 
+```
+vagrant ssh host-a
+```
+and check if we are able to communicate with host-c:
+```
+vagrant@host-a:~$ ping 192.168.3.2
+```
+The output is:
+```
+PING 192.168.3.2 (192.168.3.2) 56(84) bytes of data.
+64 bytes from 192.168.3.2: icmp_seq=1 ttl=62 time=2.58 ms
+64 bytes from 192.168.3.2: icmp_seq=2 ttl=62 time=2.51 ms
+64 bytes from 192.168.3.2: icmp_seq=3 ttl=62 time=2.94 ms
+64 bytes from 192.168.3.2: icmp_seq=4 ttl=62 time=3.12 ms
+64 bytes from 192.168.3.2: icmp_seq=5 ttl=62 time=3.00 ms
+64 bytes from 192.168.3.2: icmp_seq=6 ttl=62 time=1.16 ms
+64 bytes from 192.168.3.2: icmp_seq=7 ttl=62 time=2.99 ms
+64 bytes from 192.168.3.2: icmp_seq=8 ttl=62 time=2.60 ms
+64 bytes from 192.168.3.2: icmp_seq=9 ttl=62 time=3.01 ms
+^C
+--- 192.168.3.2 ping statistics ---
+9 packets transmitted, 9 received, 0% packet loss, time 8021ms
+rtt min/avg/max/mdev = 1.163/2.661/3.126/0.570 ms
+```
+
+### Webserver test
+To show running containers:
+```
+docker ps -a 
+```
+The output is:
+```
+CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS                         NAMES
+50401e12e847        dustnic82/nginx-test   "nginx -g 'daemon of…"   4 seconds ago       Up 3 seconds        0.0.0.0:80->80/tcp, 443/tcp   nginx
+```
+To check data transfer to and from the webserver we have to log into one of the hosts and use the following command:
+```
+vagrant@host-b:~$ curl 192.168.3.2
+```
+The output is:
+```
+<!DOCTYPE html><html><head><h1>DNCS LAB 2019/2020</h1></head><body><h3>TESTING PAGE</h3><p><i>Student name:</i> Fabiola Caso </br><i>Student number: 192707</i></p></body></html>
+```
