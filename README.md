@@ -88,13 +88,13 @@ Each interface of the devices has its own IP address assigned depending on the r
 
 For this given topology we have 2 subnets between router-1 and the switch, so we have to set up two VLANs to split the switch's broadcast domain, otherwise Host-A and Host-B would be in the same collision domain. To do so we add two ports to the switch, one with tag=10 and the other with tag=20. For each tag we add the corresponding interface to router-1, respectively enp0s8.10 and enp0s8.10. The specific commands are the following:
 
-router1.sh
+**router1.sh**
 ```
 ip link add link enp0s8 name enp0s8.10 type vlan id 10
 ip link add link enp0s8 name enp0s8.20 type vlan id 20
 ```
 
-switch.sh
+**switch.sh**
 ```
 ovs-vsctl add-port switch enp0s9 tag=10
 ovs-vsctl add-port switch enp0s9 tag=20
@@ -157,7 +157,7 @@ ovs-vsctl add-port switch enp0s9 tag=20
 ## Implementation
 Provisioning allows to execute a script within each virtual machine. Listed below are the specific commands used:
 
-hosta.sh
+**hosta.sh**
 ```
 1.  #libraries and functions
 2.  export DEBIAN_FRONTEND=noninteractive
@@ -182,7 +182,7 @@ line 9: delete default route
 line 10: define new default route
 
 
-hostb.sh
+**hostb.sh**
 ```
 1.  #libraries and functions
 2.  export DEBIAN_FRONTEND=noninteractive
@@ -207,7 +207,7 @@ line 9: delete default route
 line 10: define new default route
 
 
-router1.sh
+**router1.sh**
 ```
 1.  #libraries and functions
 2.  export DEBIAN_FRONTEND=noninteractive
@@ -241,7 +241,7 @@ line 14-16: assign IP address to interface
 line 17: set static route
 
 
-router2.sh
+**router2.sh**
 ```
 1.  #libraries and functions
 2.  export DEBIAN_FRONTEND=noninteractive
@@ -269,7 +269,7 @@ line 10-11: assign IP address to interface
 line 12-13: set static route
 
 
-switch.sh
+**switch.sh**
 ```
 1.  #libraries and functions
 2.  export DEBIAN_FRONTEND=noninteractive
@@ -300,8 +300,10 @@ line 12-14: set interfaces up
 
 ## Webserver
 
-In this case the docker is configured on port 80.
+Host-C must run a docker image. 
 
+
+**hostc.sh**
 ```
 1.  #libraries and functions
 2.  export DEBIAN_FRONTEND=noninteractive
@@ -317,7 +319,7 @@ In this case the docker is configured on port 80.
 
 line 2-5: installation of libraries and functions
 
-line 6-9: installation docker
+line 6-9: installation of docker
 
 line 10: pull required image
 
@@ -364,6 +366,59 @@ line 34: set static route
 
 ## Routing tables
 
+**host-a**
+|Destination|Gateway|Genmask|Interface|
+|---|---|---|---|
+|0.0.0.0|192.168.1.1|0.0.0.0|enp0s8|
+|10.0.2.0|0.0.0.0|255.255.255.0|enp0s3|
+|10.0.2.2|0.0.0.0|255.255.255.255|enp0s3|
+|192.168.1.0|0.0.0.0|255.255.255.0|enp0s8|
 
+
+**host-b**
+|Destination|Gateway|Genmask|Interface|
+|---|---|---|---|
+|0.0.0.0|192.168.2.1|0.0.0.0|enp0s8|
+|10.0.2.0|0.0.0.0|255.255.255.0|enp0s3|
+|10.0.2.2|0.0.0.0|255.255.255.255|enp0s3|
+|192.168.2.0|0.0.0.0|255.255.255.0|enp0s8|
+
+
+**host-c**
+|Destination|Gateway|Genmask|Interface|
+|---|---|---|---|
+|0.0.0.0|192.168.1.1|0.0.0.0|enp0s3|
+|10.0.2.0|0.0.0.0|255.255.255.0|enp0s3|
+|10.0.2.2|0.0.0.0|255.255.255.255|enp0s3|
+|172.17.0.0|0.0.0.0|255.255.0.0|docker0|
+|192.168.0.0|0.0.0.0|255.255.252.0|enp0s8|
+|192.168.1.0|192.168.3.1|255.255.255.0|enp0s8|
+|192.168.2.0|192.168.3.1|255.255.255.0|enp0s8|
+
+
+**router-1**
+
+|Destination|Gateway|Genmask|Interface|
+|---|---|---|---|
+|0.0.0.0|10.0.2.2|0.0.0.0|enp0s3|
+|10.0.2.0|0.0.0.0|255.255.255.0|enp0s3|
+|10.0.2.2|0.0.0.0|255.255.255.255|enp0s3|
+|192.168.1.0|0.0.0.0|255.255.255.0|enp0s8.10|
+|192.168.2.0|0.0.0.0||255.255.255.0|enp0s8.20|
+|192.168.3.0|192.168.4.2|255.255.255.0|enp0s9|
+|192.168.4.0|0.0.0.0|255.255.255.252|enp0s9|
+
+
+**router-2**
+
+|Destination|Gateway|Genmask|Interface|
+|---|---|---|---|
+|0.0.0.0|10.0.2.2|0.0.0.0|enp0s3|
+|10.0.2.0|0.0.0.0|255.255.255.0|enp0s3|
+|10.0.2.2|0.0.0.0|255.255.255.255|enp0s3|
+|192.168.0.0|0.0.0.0|255.255.252.0|enp0s8|
+|192.168.1.0|192.168.4.1|255.255.255.0|enp0s9|
+|192.168.2.0|192.168.4.1|255.255.255.0|enp0s9|
+|192.168.4.0|0.0.0.0|255.255.252.0|enp0s9|
 
 ## Testing
