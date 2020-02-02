@@ -70,19 +70,12 @@ Each interface of the devices has its own IP address assigned depending on the r
 |Subnet|Device|Interface|Ip|
 |---|---|---|---|
 |Host-A|router-1|enp0s8.10|192.168.1.1/24|
-|---|---|---|---|
 |Host-A|host-a|enp0s8|192.168.1.2/24|
-|---|---|---|---|
 |Host-B|router-2|enp0s8.20|192.168.2.1/24|
-|---|---|---|---|
 |Host-B|host-b|enp0s8|192.168.2.2/24|
-|---|---|---|---|
 |Hub|router-2|enp0s8|192.168.3.1/22|
-|---|---|---|---|
 |Hub|host-c|enp0s8|192.168.3.2/22|
-|---|---|---|---|
 |D|router-1|enp0s9|192.168.4.1/30|
-|---|---|---|---|
 |D|router-2|enp0s9|192.168.4.2/30|
 
 ## VLANs
@@ -104,7 +97,6 @@ ovs-vsctl add-port switch enp0s9 tag=20
 |Subnet|VLAN id|Switch interface|
 |---|---|---|
 |Host-A|10|enp0s9|
-|---|---|---|
 |Host-B|20|enp0s10|
 
 ## Topology
