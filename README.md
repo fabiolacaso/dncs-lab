@@ -1,47 +1,47 @@
 # DNCS-LAB
 
-This repository contains the Vagrant files required to run the virtual lab environment used in the DNCS course.
 ```
 
 
         +-----------------------------------------------------+
         |                                                     |
-        |                                                     |eth0
+        |                                                     |enp0s3
         +--+--+                +------------+             +------------+
-        |     |                |            |             |            |
-        |     |            eth0|            |eth2     eth2|            |
+        |     |                |  192.168.4.1/30       192.168.4.2/30  |
+        |     |          enp0s3|          enp0s9       enp0s9          |
         |     +----------------+  router-1  +-------------+  router-2  |
         |     |                |            |             |            |
         |     |                |            |             |            |
-        |  M  |                +------------+             +------------+
-        |  A  |                      |eth1                       |eth1
-        |  N  |                      |                           |
+        |     |                +------------+             +------------+
+        |  M  |                      |enp0s8              enp0s8 | 192.168.3.1/22
         |  A  |                      |                           |
+        |  N  |            enp0s8.10 192.168.1.1/24              |
+        |  A  |            enp0s8.20 192.168.2.1/24       enp0s8 | 192.168.3.2/22
         |  G  |                      |                     +-----+----+
-        |  E  |                      |eth1                 |          |
+        |  E  |                      |enp0s8               |          |
         |  M  |            +-------------------+           |          |
-        |  E  |        eth0|                   |           |  host-c  |
+        |  E  |      enp0s3|                   |           |  host-c  |
         |  N  +------------+      SWITCH       |           |          |
         |  T  |            |                   |           |          |
         |     |            +-------------------+           +----------+
-        |  V  |               |eth2         |eth3                |eth0
+        |     |              enp0s9     enp0s10                  |enp0s3
+        |  V  |               |             |                    |
         |  A  |               |             |                    |
-        |  G  |               |             |                    |
-        |  R  |               |eth1         |eth1                |
+        |  G  |              enp0s8     enp0s8                   |
+        |  R  |      192.168.1.2/24     192.168.2.2/24           |
         |  A  |        +----------+     +----------+             |
         |  N  |        |          |     |          |             |
-        |  T  |    eth0|          |     |          |             |
+        |  T  |  enp0s3|          |     |          |             |
         |     +--------+  host-a  |     |  host-b  |             |
         |     |        |          |     |          |             |
         |     |        |          |     |          |             |
         ++-+--+        +----------+     +----------+             |
-        | |                              |eth0                   |
+        | |                              |enp0s3                 |
         | |                              |                       |
         | +------------------------------+                       |
         |                                                        |
         |                                                        |
         +--------------------------------------------------------+
-
 
 
 ```
@@ -54,32 +54,6 @@ This repository contains the Vagrant files required to run the virtual lab envir
  - Vagrant (https://www.vagrantup.com)
  - Internet
 
-# How-to
- - Install Virtualbox and Vagrant
- - Clone this repository
-`git clone https://github.com/dustnic/dncs-lab`
- - You should be able to launch the lab from within the cloned repo folder.
-```
-cd dncs-lab
-[~/dncs-lab] vagrant up
-```
-Once you launch the vagrant script, it may take a while for the entire topology to become available.
- - Verify the status of the 4 VMs
- ```
- [dncs-lab]$ vagrant status                                                                                                                                                                
-Current machine states:
-
-router                    running (virtualbox)
-switch                    running (virtualbox)
-host-a                    running (virtualbox)
-host-b                    running (virtualbox)
-```
-- Once all the VMs are running verify you can log into all of them:
-`vagrant ssh router`
-`vagrant ssh switch`
-`vagrant ssh host-a`
-`vagrant ssh host-b`
-`vagrant ssh host-c`
 
 # Assignment
 This section describes the assignment, its requirements and the tasks the student has to complete.
@@ -117,4 +91,4 @@ The assignment deliverable consists of a Github repository containing:
 
 
 # Design
-[ Your work goes here ]
+
