@@ -367,6 +367,7 @@ line 34: set static route
 ## Routing tables
 
 **host-a**
+
 |Destination|Gateway|Genmask|Interface|
 |---|---|---|---|
 |0.0.0.0|192.168.1.1|0.0.0.0|enp0s8|
@@ -376,6 +377,7 @@ line 34: set static route
 
 
 **host-b**
+
 |Destination|Gateway|Genmask|Interface|
 |---|---|---|---|
 |0.0.0.0|192.168.2.1|0.0.0.0|enp0s8|
@@ -385,6 +387,7 @@ line 34: set static route
 
 
 **host-c**
+
 |Destination|Gateway|Genmask|Interface|
 |---|---|---|---|
 |0.0.0.0|192.168.1.1|0.0.0.0|enp0s3|
