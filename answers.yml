@@ -2,17 +2,17 @@ FirstName: Fabiola
 LastName: Caso
 MatriculationNumber: 192707
 AcademicYear: 2019-2020
-GitHubUrl: YourGithubRepositoryURL
+GitHubUrl: https://github.com/fabiolacaso/dncs-lab/
 Subnets:
   HostsA:
     RequiredAddresses: 145
-    SubnetAddress: YourHostsASubnetAddress
-    SubnetPrefixLength: YourHostsASubnetPrefixLength
+    SubnetAddress: 192.168.1.0
+    SubnetPrefixLength: 24
   HostsB:
     RequiredAddresses: 212
-    SubnetAddress: YourHostsBSubnetAddress
-    SubnetPrefixLength: YourHostsBSubnetPrefixLength
+    SubnetAddress: 192.168.2.0
+    SubnetPrefixLength: 24
   Hub:
     RequiredAddresses: 512
-    SubnetAddress: YourHubSubnetAddress
-    SubnetPrefixLength: YourHubSubnetPrefixLength
+    SubnetAddress: 192.168.3.0
+    SubnetPrefixLength: 22
