@@ -1,8 +1,8 @@
 #libraries and functions
 export DEBIAN_FRONTEND=noninteractive
+sudo su
 apt-get update
 apt-get install -y tcpdump --assume-yes
-sudo su
 sysctl -w net.ipv4.ip_forward=1
 #commands
 ip link set dev enp0s8 up

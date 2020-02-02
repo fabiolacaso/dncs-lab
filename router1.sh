@@ -1,8 +1,8 @@
 #libraries and functions
 export DEBIAN_FRONTEND=noninteractive
+sudo su
 apt-get update
 apt-get install -y tcpdump --assume-yes
-sudo su
 sysctl -w net.ipv4.ip_forward=1
 #commands
 ip link add link enp0s8 name enp0s8.10 type vlan id 10
