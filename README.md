@@ -300,7 +300,7 @@ line 12-14: set interfaces up
 
 ## Webserver
 
-Host-C must run a docker image. 
+Host-C must run a docker image to implement a webserver.
 
 
 **hostc.sh**
